@@ -26,3 +26,6 @@ def upload_file():
   res = getLicensePlateNumber(conf["path_download"],secure_filename(f.filename))
   os.remove(f'{conf["path_download"]}{secure_filename(f.filename)}')
   return res
+
+conf = {"host":"0.0.0.0","port":5000}
+app.run(**conf)
