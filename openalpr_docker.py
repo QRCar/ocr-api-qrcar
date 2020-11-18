@@ -8,9 +8,7 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-conf = {
-  "path_download":"/var/www/uploads/"
-}
+
 
 def getLicensePlateNumber(path, filename):
 	command = f'sudo docker run -it --rm -v {path}:/data:ro openalpr -c eu -j {filename}'
@@ -21,10 +19,11 @@ def getLicensePlateNumber(path, filename):
 
 @app.route('/ocr', methods=['POST'])
 def upload_file():  
+  path_upload="/var/www/uploads/"
   f = request.files['picture_car']
-  f.save(f'{conf["path_download"]}{secure_filename(f.filename)}')
-  res = getLicensePlateNumber(conf["path_download"],secure_filename(f.filename))
-  os.remove(f'{conf["path_download"]}{secure_filename(f.filename)}')
+  f.save(f'{path_upload}{secure_filename(f.filename)}')
+  res = getLicensePlateNumber(path_upload,secure_filename(f.filename))
+  os.remove(f'{path_upload}{secure_filename(f.filename)}')
   return res
 
 conf = {"host":"0.0.0.0","port":5000}
